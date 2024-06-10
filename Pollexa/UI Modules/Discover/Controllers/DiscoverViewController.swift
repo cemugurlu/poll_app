@@ -36,12 +36,11 @@ class DiscoverViewController: UIViewController, UITableViewDataSource, UITableVi
         // Setup Profile Photo Button
         let profilePhotoButton: UIButton = {
             let button = UIButton(type: .system)
-            button.contentMode = .scaleAspectFit
-            button.clipsToBounds = true
-            button.layer.cornerRadius = 40
-
             button.setImage(UIImage(named: "avatar_1")?.withRenderingMode(.alwaysOriginal), for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
+            button.addTarget(self, action: #selector(profilePhotoButtonTapped), for: .touchUpInside)
+            button.layer.cornerRadius = 25
+            button.clipsToBounds = true
             
             return button
         }()
@@ -49,7 +48,7 @@ class DiscoverViewController: UIViewController, UITableViewDataSource, UITableVi
         let profileHeaderStackView = UIStackView()
         profileHeaderStackView.axis = .vertical
         profileHeaderStackView.alignment = .leading
-        profileHeaderStackView.spacing = 8 // Set vertical spacing between the elements
+        profileHeaderStackView.spacing = 8
         profileHeaderStackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profileHeaderStackView)
         
