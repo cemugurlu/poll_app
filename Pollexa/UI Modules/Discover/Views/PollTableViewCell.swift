@@ -9,12 +9,27 @@ import UIKit
 
 class PollTableViewCell: UITableViewCell {
     
+    private let containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 15
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        return view
+        
+    }()
+    
     // MARK: - Properties
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
+        
     }()
     
     private let nameLabel: UILabel = {
@@ -34,8 +49,17 @@ class PollTableViewCell: UITableViewCell {
     private let contentLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private let dividerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.layer.opacity = 0.3
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private let option1ImageView: UIImageView = {
@@ -54,6 +78,8 @@ class PollTableViewCell: UITableViewCell {
         return imageView
     }()
     
+    
+    
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -67,33 +93,44 @@ class PollTableViewCell: UITableViewCell {
     
     // MARK: - Setup Subviews
     private func setupSubviews() {
-        addSubview(profileImageView)
-        addSubview(nameLabel)
-        addSubview(timeLabel)
-        addSubview(contentLabel)
-        addSubview(option1ImageView)
-        addSubview(option2ImageView)
+        contentView.addSubview(containerView)
+        containerView.addSubview(profileImageView)
+        containerView.addSubview(nameLabel)
+        containerView.addSubview(timeLabel)
+        containerView.addSubview(contentLabel)
+        containerView.addSubview(option1ImageView)
+        containerView.addSubview(option2ImageView)
+        containerView.addSubview(dividerView)
         
         NSLayoutConstraint.activate([
-            profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            profileImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            
+            profileImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+            profileImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
             profileImageView.widthAnchor.constraint(equalToConstant: 50),
             profileImageView.heightAnchor.constraint(equalToConstant: 50),
             
-            nameLabel.topAnchor.constraint(equalTo: profileImageView.topAnchor),
+            nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: timeLabel.leadingAnchor, constant: -8),
             
-            timeLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
-            timeLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            timeLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
+            timeLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
+            timeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             
-            contentLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8),
-            contentLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor),
-            contentLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            contentLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8),
+            contentLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
+            contentLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             
-            option1ImageView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 8),
-            option1ImageView.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor),
+            dividerView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 8),
+            dividerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
+            dividerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+            dividerView.heightAnchor.constraint(equalToConstant: 1),
+            
+            option1ImageView.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: 8),
+            option1ImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
             option1ImageView.widthAnchor.constraint(equalToConstant: 100),
             option1ImageView.heightAnchor.constraint(equalToConstant: 100),
             
@@ -101,16 +138,16 @@ class PollTableViewCell: UITableViewCell {
             option2ImageView.leadingAnchor.constraint(equalTo: option1ImageView.trailingAnchor, constant: 8),
             option2ImageView.widthAnchor.constraint(equalTo: option1ImageView.widthAnchor),
             option2ImageView.heightAnchor.constraint(equalTo: option1ImageView.heightAnchor),
-            option2ImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            option2ImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             
-            option2ImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            option2ImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8)
         ])
     }
     
     // MARK: - Configuration
     func configure(with post: Post) {
         nameLabel.text = post.user.username
-        timeLabel.text = DateFormatter.localizedString(from: post.createdAt, dateStyle: .medium, timeStyle: .short)
+        timeLabel.text = post.createdAt.timeAgoDisplay()
         contentLabel.text = post.content
         profileImageView.image = post.user.image
         option1ImageView.image = post.options[0].image
