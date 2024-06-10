@@ -18,7 +18,6 @@ class PollTableViewCell: UITableViewCell {
         view.layer.shadowOpacity = 0.5
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         return view
-        
     }()
     
     // MARK: - Properties
@@ -29,7 +28,6 @@ class PollTableViewCell: UITableViewCell {
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
-        
     }()
     
     private let nameLabel: UILabel = {
@@ -42,6 +40,7 @@ class PollTableViewCell: UITableViewCell {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
+        label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -78,7 +77,21 @@ class PollTableViewCell: UITableViewCell {
         return imageView
     }()
     
+    private let option1PercentageLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
+    private let option2PercentageLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -100,6 +113,8 @@ class PollTableViewCell: UITableViewCell {
         containerView.addSubview(contentLabel)
         containerView.addSubview(option1ImageView)
         containerView.addSubview(option2ImageView)
+        containerView.addSubview(option1PercentageLabel)
+        containerView.addSubview(option2PercentageLabel)
         containerView.addSubview(dividerView)
         
         NSLayoutConstraint.activate([
@@ -140,6 +155,13 @@ class PollTableViewCell: UITableViewCell {
             option2ImageView.heightAnchor.constraint(equalTo: option1ImageView.heightAnchor),
             option2ImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             
+            option1PercentageLabel.trailingAnchor.constraint(equalTo: option1ImageView.trailingAnchor, constant: -8),
+            option1PercentageLabel.bottomAnchor.constraint(equalTo: option1ImageView.bottomAnchor, constant: -8),
+
+            option2PercentageLabel.trailingAnchor.constraint(equalTo: option2ImageView.trailingAnchor, constant: -8),
+            option2PercentageLabel.bottomAnchor.constraint(equalTo: option2ImageView.bottomAnchor, constant: -8),
+
+            
             option2ImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8)
         ])
     }
@@ -152,5 +174,8 @@ class PollTableViewCell: UITableViewCell {
         profileImageView.image = post.user.image
         option1ImageView.image = post.options[0].image
         option2ImageView.image = post.options[1].image
+        option1PercentageLabel.text = "\(post.options[0].percentage)%"
+        option2PercentageLabel.text = "\(post.options[1].percentage)%"
     }
 }
+

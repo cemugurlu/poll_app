@@ -10,10 +10,18 @@ import UIKit
 class ActivePollsView: UIView {
     
     // MARK: - Properties
+    private let backgroundContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 88/255, green: 86/255, blue: 214/255, alpha: 1.0)
+        view.layer.cornerRadius = 18
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "2 Active Polls"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         label.textColor = .white
         return label
     }()
@@ -22,14 +30,23 @@ class ActivePollsView: UIView {
         let label = UILabel()
         label.text = "See Details"
         label.textColor = .white
+        label.layer.opacity = 0.5
         label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
-
+    
+    private let arrowContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     private let arrowImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "arrow.right"))
-        imageView.tintColor = .white
+        imageView.tintColor = UIColor(red: 88/255, green: 86/255, blue: 214/255, alpha: 1.0)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -46,33 +63,43 @@ class ActivePollsView: UIView {
     
     // MARK: - Setup View
     private func setupView() {
-        backgroundColor = UIColor(red: 88/255, green: 86/255, blue: 214/255, alpha: 1.0)
-        layer.cornerRadius = 20
-        translatesAutoresizingMaskIntoConstraints = false
+        addSubview(backgroundContainerView)
         
-        addSubview(titleLabel)
-        addSubview(detailsSubtitle)
-        addSubview(arrowImageView)
+        backgroundContainerView.addSubview(titleLabel)
+        backgroundContainerView.addSubview(detailsSubtitle)
+        backgroundContainerView.addSubview(arrowContainerView)
+        arrowContainerView.addSubview(arrowImageView)
         
-        // Set Constraints
+        backgroundContainerView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         detailsSubtitle.translatesAutoresizingMaskIntoConstraints = false
-        arrowImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            // Title Label Constraints
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            
-            // Details Button Constraints
-            detailsSubtitle.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            detailsSubtitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            
-            // Arrow ImageView Constraints
-            arrowImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            arrowImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
-        ])
+                    backgroundContainerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -5),
+                    backgroundContainerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 10),
+                    backgroundContainerView.topAnchor.constraint(equalTo: topAnchor, constant: -5),
+                    backgroundContainerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
+                    
+                    // Title Label Constraints
+                    titleLabel.topAnchor.constraint(equalTo: backgroundContainerView.topAnchor, constant: 15),
+                    titleLabel.leadingAnchor.constraint(equalTo: backgroundContainerView.leadingAnchor, constant: 20),
+                    
+                    // Details Subtitle Constraints
+                    detailsSubtitle.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
+                    detailsSubtitle.leadingAnchor.constraint(equalTo: backgroundContainerView.leadingAnchor, constant: 20),
+                    
+                    // Arrow Container View Constraints
+                    arrowContainerView.centerYAnchor.constraint(equalTo: backgroundContainerView.centerYAnchor),
+                    arrowContainerView.trailingAnchor.constraint(equalTo: backgroundContainerView.trailingAnchor, constant: -20),
+                    arrowContainerView.widthAnchor.constraint(equalToConstant: 30),
+                    arrowContainerView.heightAnchor.constraint(equalToConstant: 30),
+                    
+                    // Arrow ImageView Constraints
+                    arrowImageView.centerXAnchor.constraint(equalTo: arrowContainerView.centerXAnchor),
+                    arrowImageView.centerYAnchor.constraint(equalTo: arrowContainerView.centerYAnchor),
+                    arrowImageView.widthAnchor.constraint(equalToConstant: 20),
+                    arrowImageView.heightAnchor.constraint(equalToConstant: 20)
+                ])
     }
-    
 }
 
